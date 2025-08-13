@@ -7,7 +7,7 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     // Create trivia_questions table
     await pool.query(`
