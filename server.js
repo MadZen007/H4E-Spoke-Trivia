@@ -35,6 +35,7 @@ app.use("/api/trivia/track", require("./api/track"));
 app.use("/api/trivia/stats", require("./api/stats"));
 app.use("/api/trivia/suggest", require("./api/suggest"));
 app.use("/api/trivia/generate", require("./api/generate-questions"));
+app.use("/api/trivia/setup", require("./api/setup"));
 app.use("/api/trivia/member/login", require("./api/member/login"));
 app.use("/api/trivia/member/signup", require("./api/member/signup"));
 
