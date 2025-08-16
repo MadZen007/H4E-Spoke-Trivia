@@ -939,4 +939,13 @@ input[type="file"]:focus {
 .image-preview img {
   border: 2px solid var(--accent-orange);
   box-shadow: 0 0 10px rgba(255, 102, 0, 0.3);
-} 
+  /* Ensure Back to Home link is on top and clickable */
+.game-header {
+  position: relative;
+  z-index: 1000;
+}
+.back-button {
+  position: relative;
+  z-index: 1100;
+  pointer-events: auto;
+}
