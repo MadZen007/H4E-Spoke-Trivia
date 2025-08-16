@@ -12,7 +12,7 @@
   <div class="game-container">
     <!-- Header -->
     <header class="game-header">
-      <a class="back-button" href="https://horror4ever.com/">← Back to Home</a>
+      <a id="backHome" class="back-button" href="https://horror4ever.com/">← Back to Home</a>
       <div class="score-display">
         <span class="score-label">Score:</span>
         <span class="score-value" id="totalScore">0</span>
@@ -290,6 +290,18 @@
             }
           });
         </script>
+        <script>
+  (function () {
+    var el = document.getElementById('backHome');
+    if (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = 'https://horror4ever.com/';
+      }, { capture: true });
+    }
+  }());
+</script>
 </body>
 </html> 
 
