@@ -835,17 +835,8 @@ class HorrorTriviaGame {
     this.showScreen(this.gameOverScreen);
     this.finalScore.textContent = this.totalScore;
     
-   if (linkFromUrl) {
-  console.log('Contest link detected in URL, automatically starting contest game');
-  // Pre-fill the link input
-  const linkInput = document.getElementById('contestLink');
-  if (linkInput) {
-    linkInput.value = linkFromUrl;
-  }
-  // Automatically validate and start the contest game
-  game.contestLink = linkFromUrl;
-  game.startContestGame();
 }
+
 // Initialize the game when the page loads
 document.addEventListener('DOMContentLoaded', () => {
   const game = new HorrorTriviaGame();
@@ -858,13 +849,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const linkFromUrl = urlParams.get('link');
   
   if (linkFromUrl) {
-    console.log('Contest link detected in URL, automatically showing contest mode');
-    game.showContestMode();
+    console.log('Contest link detected in URL, automatically showing contest screen');
     // Pre-fill the link input
     const linkInput = document.getElementById('contestLink');
     if (linkInput) {
       linkInput.value = linkFromUrl;
     }
+    // Show the contest link validation screen immediately
+    game.showScreen(game.contestLinkScreen);
   }
 });
 
