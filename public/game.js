@@ -830,12 +830,7 @@ class HorrorTriviaGame {
     }
   }
 
-  // Override endGame for contest mode
-  endGame() {
-    this.showScreen(this.gameOverScreen);
-    this.finalScore.textContent = this.totalScore;
-    
-}
+ 
 
 // Initialize the game when the page loads
 document.addEventListener('DOMContentLoaded', () => {
