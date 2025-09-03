@@ -50,7 +50,7 @@
     </div>
 
     <!-- Game Start Screen -->
-    <div id="startScreen" class="screen active">
+    <div id="startScreen" class="screen">
       <div class="start-content">
         <h1 class="game-title">HORROR TRIVIA</h1>
         <p class="game-subtitle">Do you REALLY know your Horror!?</p>
@@ -223,6 +223,36 @@
     </div>
   </div>
 
+  <style>
+    /* Contest link detection - automatically show contest screen when link present */
+    .screen { display: none; }
+    .screen.active { display: block; }
+    
+    /* Default: show start screen */
+    #startScreen { display: block; }
+    
+    /* When contest link is present, show contest screen instead */
+    body[data-contest-link="true"] #startScreen { display: none; }
+    body[data-contest-link="true"] #contestLinkScreen { display: block; }
+  </style>
+  
+  <script>
+    // Simple contest link detection - no complex JavaScript needed
+    const urlParams = new URLSearchParams(window.location.search);
+    const contestLink = urlParams.get('link');
+    
+    if (contestLink) {
+      // Set data attribute to trigger CSS rules
+      document.body.setAttribute('data-contest-link', 'true');
+      
+      // Pre-fill the contest link input
+      const linkInput = document.getElementById('contestLink');
+      if (linkInput) {
+        linkInput.value = contestLink;
+      }
+    }
+  </script>
+  
   <script src="src/game.js"></script>
   
           <!-- Image preview function -->
