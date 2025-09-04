@@ -1,0 +1,4 @@
+This is a test file to check if the editor tool is working.
+Current timestamp: 2024-12-19
+If you see this content, the editor tool is working.
+If you see the old content or no file, the editor tool is broken.

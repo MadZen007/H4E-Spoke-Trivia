@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+const { Pool } = require('pg');
 
 // Database connection
 const pool = new Pool({
@@ -16,7 +16,7 @@ function generateGameLink(contestId, email) {
   return hash.replace(/[^a-zA-Z0-9]/g, '').substring(0, 32);
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   try {
     if (req.method === 'GET') {
       // Get all registrations
@@ -175,4 +175,4 @@ export default async function handler(req, res) {
     console.error('Database error:', error);
     return res.status(500).json({ error: 'Database error occurred' });
   }
-}
+};
