@@ -174,9 +174,9 @@ class HorrorTriviaGame {
     if (this.questionImage) {
       this.questionImage.onerror = () => {
         // If external image fails, fall back to placeholder
-        this.questionImage.src = '../images/skeletonquestion.png';
+        this.questionImage.src = 'images/skeletonquestion.png';
       };
-      this.questionImage.src = this.currentQuestion.image_url || '../images/skeletonquestion.png';
+      this.questionImage.src = this.currentQuestion.image_url || 'images/skeletonquestion.png';
     } else {
       console.error('questionImage element not found!');
     }
@@ -584,7 +584,7 @@ class HorrorTriviaGame {
     
     // Handle image file upload
     const imageFile = formData.get('questionImage');
-    let imageUrl = '../images/skeletonquestion.png'; // Default placeholder
+    let imageUrl = 'images/skeletonquestion.png'; // Default placeholder
     
     if (imageFile && imageFile.size > 0) {
       try {
@@ -751,8 +751,8 @@ class HorrorTriviaGame {
       await this.trackContestGameStart();
       
       // Show first question
-      this.showQuestion();
       this.showScreen(this.questionScreen);
+      this.loadQuestion();
       
     } catch (error) {
       console.error('Error starting contest game:', error);
