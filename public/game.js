@@ -141,6 +141,9 @@ class HorrorTriviaGame {
   }
 
   async loadQuestion() {
+    console.log('=== LOAD QUESTION METHOD CALLED ===');
+    console.log('Current question index:', this.currentQuestionIndex);
+    console.log('Game questions length:', this.gameQuestions.length);
     console.log(`Loading question ${this.currentQuestionIndex + 1} of ${this.gameQuestions.length}`);
     
     // If we're running low on questions, fetch more
@@ -163,12 +166,15 @@ class HorrorTriviaGame {
     
     // Load question content
     console.log('Loading question:', this.currentQuestion);
+    console.log('Question text element:', this.questionText);
+    console.log('Question text content:', this.currentQuestion.question);
     
     if (!this.questionText) {
       console.error('questionText element not found!');
       return;
     }
     this.questionText.textContent = this.currentQuestion.question;
+    console.log('Set question text to:', this.questionText.textContent);
     
     // Load image with error handling
     if (this.questionImage) {
@@ -184,6 +190,14 @@ class HorrorTriviaGame {
     // Load options (handle both array and JSON string formats)
     let options = this.currentQuestion.options;
     console.log('Raw options:', options);
+    
+    // If no options field, create from correct_answer and wrong_answers
+    if (!options && this.currentQuestion.correct_answer && this.currentQuestion.wrong_answers) {
+      options = [this.currentQuestion.correct_answer, ...this.currentQuestion.wrong_answers];
+      // Shuffle the options
+      options = this.shuffleArray(options);
+      console.log('Created options from correct_answer and wrong_answers:', options);
+    }
     
     if (typeof options === 'string') {
       try {
@@ -264,6 +278,14 @@ class HorrorTriviaGame {
     
     // Handle options (could be array or JSON string)
     let options = this.currentQuestion.options;
+    
+    // If no options field, create from correct_answer and wrong_answers (same as loadQuestion)
+    if (!options && this.currentQuestion.correct_answer && this.currentQuestion.wrong_answers) {
+      options = [this.currentQuestion.correct_answer, ...this.currentQuestion.wrong_answers];
+      // Shuffle the options (same as loadQuestion)
+      options = this.shuffleArray(options);
+    }
+    
     if (typeof options === 'string') {
       try {
         options = JSON.parse(options);
@@ -271,6 +293,11 @@ class HorrorTriviaGame {
         console.error('Error parsing options:', e);
         options = [];
       }
+    }
+    
+    if (!options || !options[selectedIndex]) {
+      console.error('Options not available for answer selection');
+      return;
     }
     
     const selectedAnswer = options[selectedIndex];
@@ -725,12 +752,16 @@ class HorrorTriviaGame {
       console.log('Fetching contest questions...');
       const response = await fetch('/api/trivia/questions?limit=500&approved=true&random=true');
       
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
+      
       if (!response.ok) {
         throw new Error('Failed to fetch contest questions');
       }
       
       this.gameQuestions = await response.json();
       
+      console.log('Raw response data:', this.gameQuestions);
       console.log(`Loaded ${this.gameQuestions.length} questions for the contest`);
       
       if (this.gameQuestions.length === 0) {
@@ -751,8 +782,11 @@ class HorrorTriviaGame {
       await this.trackContestGameStart();
       
       // Show first question
+      console.log('About to show question screen...');
       this.showScreen(this.questionScreen);
+      console.log('Question screen shown, about to load question...');
       this.loadQuestion();
+      console.log('Load question called');
       
     } catch (error) {
       console.error('Error starting contest game:', error);
@@ -830,7 +864,16 @@ class HorrorTriviaGame {
     }
   }
 
- 
+  // Utility method to shuffle an array
+  shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
+}
 
 // Initialize the game when the page loads
 document.addEventListener('DOMContentLoaded', () => {
@@ -844,14 +887,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const linkFromUrl = urlParams.get('link');
   
   if (linkFromUrl) {
-    console.log('Contest link detected in URL, automatically showing contest screen');
+    console.log('Contest link detected in URL, automatically starting contest game');
     // Pre-fill the link input
     const linkInput = document.getElementById('contestLink');
     if (linkInput) {
       linkInput.value = linkFromUrl;
     }
-    // Show the contest link validation screen immediately
-    game.showScreen(game.contestLinkScreen);
+    // Automatically start the contest game
+    game.validateContestLink();
   }
 });
 
